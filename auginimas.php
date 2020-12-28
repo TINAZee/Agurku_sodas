@@ -16,7 +16,7 @@ if (isset($_POST['auginti'])) {
     foreach($_SESSION['a'] as $index => &$agurkas) {
         $agurkas['agurkai'] += $_POST['kiekis'][$agurkas['id']];
     }
-    header('Location:./auginimas.php.');
+    header('Location:./auginimas.php');
     exit;
 }
 ?>

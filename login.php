@@ -3,7 +3,7 @@ session_start();
 
 if(isset($_GET['logout'])) {
     $_SESSION['logged'] = 0;
-    header('Location: ./sodinimas.php.');
+    header('Location: ./sodinimas.php');
     die;
 }
 
@@ -20,13 +20,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') { //JEIGU PASPAUDE MYGTUKA SUMBIT
             md5($_POST['pass'] ?? '') === $user['pass']){
                $_SESSION['vardas'] = $user['name'];
                $_SESSION['logged'] = 1;
-               header('Location: ./sodinimas.php.');
+               header('Location: ./sodinimas.php');
                die;
            }
     }
     $_SESSION['msg'] = "<span style='display: block; max-width: 300px; text-align:center; margin: auto; margin-top: 20px; font-size: 20px; color: #5c565c; text-transform: uppercase'>
     Bad email or password.</span>";
-    header('Location: ./login.php.');
+    header('Location: ./login.php');
     die;
 }
 
