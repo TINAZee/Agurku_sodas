@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/login.php');
+    header('Location: ./login.php');
     die;
 }
 
@@ -17,7 +17,7 @@ if (isset($_POST['skinti'])) {
             $skynimas = $_POST['kiek_skinti'];
                 $agurkas['agurkai'] -= $_POST['kiek_skinti'][$agurkas['id']];
     }
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/skynimas.php.');
+    header('Location: ./skynimas.php.');
     exit;
 }
 
@@ -30,7 +30,7 @@ if (isset($_POST['skinti_visus'])) {
             $agurkas['agurkai'] -=  $agurkas['agurkai'];
         }
     }
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/skynimas.php.');
+    header('Location: ./skynimas.php.');
     die;
 }
 
@@ -40,7 +40,7 @@ if (isset($_POST['nuimtiDerliu'])) {
     foreach($_SESSION['a'] as $index => &$agurkas) {
         $agurkas['agurkai'] = 0;
     }
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/skynimas.php.');
+    header('Location: ./skynimas.php.');
     exit;
 }
 

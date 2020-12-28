@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/login.php');
+    header('Location:./login.php');
     die;
 }
 
@@ -16,7 +16,7 @@ if (isset($_POST['auginti'])) {
     foreach($_SESSION['a'] as $index => &$agurkas) {
         $agurkas['agurkai'] += $_POST['kiekis'][$agurkas['id']];
     }
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/auginimas.php.');
+    header('Location:./auginimas.php.');
     exit;
 }
 ?>

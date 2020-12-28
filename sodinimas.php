@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
-    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/login.php');
+    header('Location: ./login.php');
     die;
 }
 
@@ -19,7 +19,7 @@ if (isset($_POST['sodinti'])) {
         'img' => $img[array_rand($img)],
         'agurkai' => 0
     ];
-    header('Location:http://localhost/BIT_KURSAI_PHP/Agurku_sodas/sodinimas.php');
+    header('Location:./sodinimas.php');
     die;
 }
 // ISROVIMO SCENARIJUS
@@ -27,7 +27,7 @@ if (isset($_POST['rauti'])) {
     foreach($_SESSION['a'] as $index => $agurkas) {
         if ($_POST['rauti'] == $agurkas['id']) {
             unset($_SESSION['a'][$index]);
-            header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/sodinimas.php');
+            header('Location: ./sodinimas.php');
             die;
         }
     }
