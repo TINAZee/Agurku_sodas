@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
+    header('Location: http://localhost/BIT_KURSAI_PHP/Agurku_sodas/login.php');
+    die;
+}
+
 if (!isset($_SESSION['a'])) {
     $_SESSION['a'] = [];
     $_SESSION['agurku ID'] = 0;
@@ -50,6 +55,7 @@ if (isset($_POST['nuimtiDerliu'])) {
 </head>
 <body>
 <header>
+<a class="loggout" href="login.php?logout">Atsijungti</a>
 <a href="sodinimas.php">Sodinimas</a>
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skynimas</a>
