@@ -11,17 +11,38 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['agurku ID'] = 0;
 }
 
+_d($_SESSION,'SESIJA');
+
+// SODINIMO SCENARIJUS
 // SODINIMO SCENARIJUS
 if (isset($_POST['sodinti'])) {
-    $_SESSION['a'][] = [
-        'id' => ++$_SESSION['agurku ID'],
-        $img = ['./img/img_1.jpg', './img/img_2.jpg', './img/img_3.jpg','./img/img_4.jpg','./img/img_5.jpg'],
-        'img' => $img[array_rand($img)],
-        'agurkai' => 0
-    ];
-    header('Location:./sodinimas.php');
-    die;
+
+    $kiekis = (int) $_POST['kiekis'];
+
+    if (0 > $kiekis || 10 < $kiekis) { // <--- validacija
+        if (0 > $kiekis) {
+            $_SESSION['err'] = 1; // <-- neigiamas agurku kiekis
+        }
+        elseif(4 < $kiekis) {
+            $_SESSION['err'] = 2; // <-- per daug
+        }
+        
+        header('Location: ./sodinimas.php');
+        exit;
+    }
+
+    foreach(range(1, $kiekis) as $_) {
+        $_SESSION['a'][] = [
+            'id' => ++$_SESSION['agurku ID'],
+            'agurkai' => 0
+        ];
+    }
+
+
+    header('Location: ./sodinimas.php');
+    exit;
 }
+
 // ISROVIMO SCENARIJUS
 if (isset($_POST['rauti'])) {
     foreach($_SESSION['a'] as $index => $agurkas) {
@@ -52,6 +73,7 @@ if (isset($_POST['rauti'])) {
 </header>
 <h1>Agurkų sodas</h1>
 <h3>Sodinimas</h3>
+    <?php include __DIR__.'/error.php' ?>
     <form action="" method="post">
     <?php foreach($_SESSION['a'] as $agurkas): ?>
     <div id = main>
@@ -62,7 +84,9 @@ if (isset($_POST['rauti'])) {
     </div>
 
     <?php endforeach ?>
+    <input type="text" name="kiekis">
     <button type="submit" name="sodinti">SODINTI</button>
+    
     </form>
 </body>
 </html>
