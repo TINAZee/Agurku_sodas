@@ -11,15 +11,12 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['agurku ID'] = 0;
 }
 
-_d($_SESSION,'SESIJA');
-
-// SODINIMO SCENARIJUS
 // SODINIMO SCENARIJUS
 if (isset($_POST['sodinti'])) {
 
     $kiekis = (int) $_POST['kiekis'];
 
-    if (0 > $kiekis || 10 < $kiekis) { // <--- validacija
+    if (0 > $kiekis || 4 < $kiekis) { // <--- validacija
         if (0 > $kiekis) {
             $_SESSION['err'] = 1; // <-- neigiamas agurku kiekis
         }
@@ -34,6 +31,14 @@ if (isset($_POST['sodinti'])) {
     foreach(range(1, $kiekis) as $_) {
         $_SESSION['a'][] = [
             'id' => ++$_SESSION['agurku ID'],
+            $img = [
+                "./img/img_1.jpg", 
+                "./img/img_2.jpg", 
+                "./img/img_3.jpg", 
+                "./img/img_4.jpg", 
+                "./img/img_5.jpg"
+            ],
+            'img' => $img[array_rand($img)],
             'agurkai' => 0
         ];
     }
@@ -69,24 +74,35 @@ if (isset($_POST['rauti'])) {
 <a class="loggout" href="login.php?logout">Atsijungti</a>
 <a href="sodinimas.php">Sodinimas</a>
 <a href="auginimas.php">Auginimas</a>
-<a href="skynimas.php">Skynimas</a>
+<a href="skynimas.php">Skinimas</a>
 </header>
 <h1>Agurkų sodas</h1>
 <h3>Sodinimas</h3>
     <?php include __DIR__.'/error.php' ?>
+
+    <div class = "container">
+
     <form action="" method="post">
+
     <?php foreach($_SESSION['a'] as $agurkas): ?>
-    <div id = main>
+
+    <div class = "row col-3 col-lg-3 col-md-2">
+
     <img class="img" src="<?= $agurkas['img'] ?>" alt="agurkas">
+
     <p>Agurkas nr. <?= $agurkas['id'] ?></p>
+
     Agurkų: <?= $agurkas['agurkai'] ?>
+
     <button type="submit" name="rauti" value="<?= $agurkas['id'] ?>">Išrauti</button>
+
     </div>
 
     <?php endforeach ?>
+    
     <input type="text" name="kiekis">
     <button type="submit" name="sodinti">SODINTI</button>
-    
     </form>
+    </div>
 </body>
 </html>

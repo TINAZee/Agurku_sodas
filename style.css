@@ -1,16 +1,24 @@
-body  {
-    background-color: rgb(238, 238, 204);
-    font-family: Arial, Helvetica, sans-serif;
-   }
+body,
+body * {
+margin: 0;
+padding: 0;
+vertical-align: top;
+box-sizing: border-box;
+word-break: break-all;
+font-family: Arial, Helvetica, sans-serif;
+background-color: beige;
+}
+
    h1 {
     color: rgb(10, 98, 10);
-    text-align: center
+    text-align: center; 
    }
    h3{
     color: green;
     text-align: center 
    }
-   #main {
+   .row {
+       display: inline-block;
        background: rgb(174, 226, 174);
        margin: 15px 20px 15px 20px;
        text-align: center;
@@ -29,6 +37,10 @@ body  {
     text-decoration: none;
     color:rgb(3, 35, 3);
     margin-left: 15px;
+    background: rgb(146, 206, 158); 
+   }
+   p{
+    background: rgb(174, 226, 174);
    }
    header {
        background: rgb(146, 206, 158);
@@ -50,13 +62,16 @@ body  {
     text-align: center;
     margin-left:calc( (100% - 300px) / 2 );
     margin-right:calc( (100% - 300px) / 2 );
-
-
-
    }
 
    .logginfrm {
     margin-left: auto;
     margin-right: auto;
     width: 8em
+   }
+   .container {
+    text-align: center;
+   }
+   .text {
+     
    }
