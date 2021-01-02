@@ -27,28 +27,34 @@ if (isset($_POST['auginti'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auginimas</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans+Condensed:wght@300&family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
 <a class="loggout" href="login.php?logout">Atsijungti</a>
-<a href="sodinimas.php">Sodinimas</a>
+<div id="space"></div>
+<a  href="sodinimas.php">Sodinimas</a>
 <a href="auginimas.php">Auginimas</a>
-<a href="skynimas.php">Skynimas</a>
+<a href="skynimas.php">Skinimas</a>
 </header>
 <h1>Agurkų sodas</h1>
 <h3>Auginimas</h3>
+    <div class = "container">
     <form action="" method="post">
     <?php foreach($_SESSION['a'] as $agurkas): ?>
-    <div id = main>
+    <div class = "row">
     <?php $kiekis = rand(2, 9) ?>
     <td><img class="img" src="<?= $agurkas['img'] ?>" alt="agurkas">
-    <h1 style="display:inline;"><?= $agurkas['agurkai'] ?></h1>
-    <h3 style="display:inline;color:red;">+<?= $kiekis ?></h3>
+    <p>Agurko augalas nr. <?= $agurkas['id'] ?></p>
+    <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas['agurkai'] ?></h1>
+    <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $kiekis ?></h3>
     <input type="hidden" name="kiekis[<?= $agurkas['id'] ?>]" value="<?= $kiekis ?>">
-    Agurkas Nr. <?= $agurkas['id'] ?>
     </div>
     <?php endforeach ?>
-    <button type="submit" name="auginti">Auginti</button>
+    <br>
+    <button type="submit" class="btn" name="auginti">Auginti</button>
     </form>
+    </div>
 </body>
 </html>

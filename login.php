@@ -42,16 +42,19 @@ if(isset($_SESSION['msg'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOGIN</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans+Condensed:wght@300&family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Agurkų sodas</h1>
     <div><?= $msg ?? '' ?></div>
+    <div style="background: beige" id="space"></div>
     <form id = logginform action="" method="POST">
-        <input class = logginfrm type="text" name="vardas" placeholder="Vardas">
+        <input  type="text" class="text" name="vardas" placeholder="Vardas">
         <br><br>
-        <input class = logginfrm type="password" name="pass" value="" placeholder="Password">
+        <input  type="password" class="text" name="pass" value="" placeholder="Slaptažodis">
         <br><br>
-        <input class = logginfrm class="btn" type="submit" value="Login" value="">  
+        <input  class="btn" type="submit" value="Login" value="">  
     </form>
 </body>
 </html>

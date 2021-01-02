@@ -68,11 +68,14 @@ if (isset($_POST['rauti'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sodinimas</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans+Condensed:wght@300&family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
 <a class="loggout" href="login.php?logout">Atsijungti</a>
-<a href="sodinimas.php">Sodinimas</a>
+<div id="space"></div>
+<a  href="sodinimas.php">Sodinimas</a>
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skinimas</a>
 </header>
@@ -86,22 +89,23 @@ if (isset($_POST['rauti'])) {
 
     <?php foreach($_SESSION['a'] as $agurkas): ?>
 
-    <div class = "row col-3 col-lg-3 col-md-2">
+    <div class = "row">
 
     <img class="img" src="<?= $agurkas['img'] ?>" alt="agurkas">
 
-    <p>Agurkas nr. <?= $agurkas['id'] ?></p>
+    <p>Agurko augalas nr. <?= $agurkas['id'] ?></p>
 
-    Agurkų: <?= $agurkas['agurkai'] ?>
+    <p style="color:rgb(19, 175, 2);font-size:18px">Agurkų vaisių: <?= $agurkas['agurkai'] ?></p>
 
-    <button type="submit" name="rauti" value="<?= $agurkas['id'] ?>">Išrauti</button>
+    <button type="submit" class="btn" name="rauti" value="<?= $agurkas['id'] ?>">Išrauti</button>
 
     </div>
 
     <?php endforeach ?>
-    
-    <input type="text" name="kiekis">
-    <button type="submit" name="sodinti">SODINTI</button>
+    <br>
+    <input type="text" class="text" name="kiekis">
+    <button type="submit" class="btn" name="sodinti">SODINTI</button>
+    <br>
     </form>
     </div>
 </body>

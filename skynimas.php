@@ -15,29 +15,23 @@ if (!isset($_SESSION['a'])) {
 if (isset($_POST['skinti'])) {
 
     $nuskinti = $_POST['kiek_skinti'];
-    foreach($_SESSION['a'] as $index => &$agurkas) {
 
+    foreach($_SESSION['a'] as $index => &$agurkas) {
+        
         if ((int)$_POST['kiek_skinti'][$agurkas['id']] < 0 ) { 
             $_SESSION['err'] = 1; 
         }
         elseif ((int)$_POST['kiek_skinti'][$agurkas['id']] > $agurkas['agurkai'] ) {
             $_SESSION['err'] = 3;  
         }
-        elseif (!is_numeric($nuskinti)) {
-            $_SESSION['err'] = 4;  
-        } 
-        elseif (!is_int($nuskinti)) {
-            $_SESSION['err'] = 5;  
-        } 
         else {
         $agurkas['agurkai'] -= (int)$_POST['kiek_skinti'][$agurkas['id']];
         }
     }
+
     header('Location: ./skynimas.php');
     exit;
-    }
-
-
+}
 
 //SKINTI VISUS SCENARIJUS
 
@@ -70,11 +64,14 @@ if (isset($_POST['nuimtiDerliu'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skynimas</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans+Condensed:wght@300&family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
 <a class="loggout" href="login.php?logout">Atsijungti</a>
-<a href="sodinimas.php">Sodinimas</a>
+<div id="space"></div>
+<a  href="sodinimas.php">Sodinimas</a>
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skinimas</a>
 </header>
@@ -88,19 +85,23 @@ if (isset($_POST['nuimtiDerliu'])) {
 
     <?php foreach($_SESSION['a'] as $agurkas): ?>
 
-    <div class = "row col-3 col-lg-3 col-md-2">
+    <div class = "row">
+
     <td><img class="img" src="<?= $agurkas['img'] ?>" alt="agurkas">
-    <p> Agurkas Nr. <?= $agurkas['id'] ?></p>
-    <p style="color:red"> Galima skinti: </p>
-    <h1 style="background-color: rgb(174, 226, 174);"><?= $agurkas['agurkai'] ?></h1>
-    <input type="text" class="text" style="display:inline-block;" name="kiek_skinti[<?= $agurkas['id'] ?>]"value=<?= $nuskinti ?? 0 ?>>
-    <button type="submit" name="skinti">Skinti</button>
+
+    <p> Agurko augalas Nr. <?= $agurkas['id'] ?></p>
+    <p style="color:red;font-size:19px"> Galima skinti: </p>
+    <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas['agurkai'] ?></h1>
+    <p style="display:inline-block;line-height:1.8">agurk.</p>
     <br>
-    <button type="submit" name="skinti_visus" value="<?= $agurkas['id'] ?>">Skinti visus</button>
+    <input type="text" class="text"  name="kiek_skinti[<?= $agurkas['id'] ?>]"value=<?= $nuskinti ?? 0 ?>>
+    <button type="submit" class="btn" name="skinti">Skinti</button>
+    <br>
+    <button type="submit" class="btn" name="skinti_visus" value="<?= $agurkas['id'] ?>">Skinti visus</button>
     </div>
     <?php endforeach ?>
     <br>
-    <button type="submit" name="nuimtiDerliu">Nuimti visą derlių</button>
+    <button type="submit" class="btn" name="nuimtiDerliu">Nuimti visą derlių</button>
     </form>
     </div>
 </body>
