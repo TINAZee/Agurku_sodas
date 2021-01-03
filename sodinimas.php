@@ -11,6 +11,7 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['agurku ID'] = 0;
 }
 
+
 // SODINIMO SCENARIJUS
 if (isset($_POST['sodinti'])) {
 
@@ -28,7 +29,13 @@ if (isset($_POST['sodinti'])) {
         exit;
     }
 
-    foreach(range(1, $kiekis) as $_) {
+    if(empty($kiekis)) {
+        $_SESSION['err'] = 4; // <-- neigiamas agurku kiekis
+        header('Location: ./sodinimas.php');
+        exit;
+    }
+
+    foreach(range(0, $kiekis) as $_) {
         $_SESSION['a'][] = [
             'id' => ++$_SESSION['agurku ID'],
             $img = [
