@@ -30,26 +30,43 @@ if (isset($_POST['sodinti'])) {
     }
 
     if(empty($kiekis)) {
-        $_SESSION['err'] = 4; // <-- neigiamas agurku kiekis
+        $_SESSION['err'] = 4; 
         header('Location: ./sodinimas.php');
         exit;
     }
 
-    foreach(range(0, $kiekis) as $_) {
-        $_SESSION['a'][] = [
-            'id' => ++$_SESSION['agurku ID'],
-            $img = [
-                "./img/img_1.jpg", 
-                "./img/img_2.jpg", 
-                "./img/img_3.jpg", 
-                "./img/img_4.jpg", 
-                "./img/img_5.jpg"
-            ],
-            'img' => $img[array_rand($img)],
-            'agurkai' => 0
-        ];
-    }
+    if ($kiekis = 1) {
+        foreach(range(0, 0) as $_) {
+            $_SESSION['a'][] = [
+                'id' => ++$_SESSION['agurku ID'],
+                $img = [
+                    "./img/img_1.jpg", 
+                    "./img/img_2.jpg", 
+                    "./img/img_3.jpg", 
+                    "./img/img_4.jpg", 
+                    "./img/img_5.jpg"
+                ],
+                'img' => $img[array_rand($img)],
+                'agurkai' => 0
+            ];
+        }
+    } else {
 
+        foreach(range(0, $kiekis) as $_) {
+            $_SESSION['a'][] = [
+                'id' => ++$_SESSION['agurku ID'],
+                $img = [
+                    "./img/img_1.jpg", 
+                    "./img/img_2.jpg", 
+                    "./img/img_3.jpg", 
+                    "./img/img_4.jpg", 
+                    "./img/img_5.jpg"
+                ],
+                'img' => $img[array_rand($img)],
+                'agurkai' => 0
+            ];
+        }
+    }
 
     header('Location: ./sodinimas.php');
     exit;
