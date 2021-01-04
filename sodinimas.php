@@ -83,6 +83,8 @@ if (isset($_POST['rauti'])) {
     }
 }
 
+_d($_SESSION);
+
 ?>
 
 <!DOCTYPE html>
