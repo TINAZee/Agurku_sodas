@@ -7,9 +7,12 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 }
 
 if (!isset($_SESSION['a'])) {
-    $_SESSION['a'] = [];
+    // $_SESSION['a'] = [];
+    $_SESSION['obj'] = []; //<----- agurko objektai
     $_SESSION['agurku ID'] = 0;
 }
+
+include __DIR__ . '/Agurkas.php'; //<------importuojama agurko klasė
 
 
 // SODINIMO SCENARIJUS
@@ -35,36 +38,33 @@ if (isset($_POST['sodinti'])) {
         exit;
     }
 
-    if ($kiekis = 1) {
+    if ($kiekis <= 1) {
         foreach(range(0, 0) as $_) {
-            $_SESSION['a'][] = [
-                'id' => ++$_SESSION['agurku ID'],
-                $img = [
-                    "./img/img_1.jpg", 
-                    "./img/img_2.jpg", 
-                    "./img/img_3.jpg", 
-                    "./img/img_4.jpg", 
-                    "./img/img_5.jpg"
-                ],
-                'img' => $img[array_rand($img)],
-                'agurkai' => 0
-            ];
-        }
-    } else {
 
-        foreach(range(0, $kiekis) as $_) {
-            $_SESSION['a'][] = [
-                'id' => ++$_SESSION['agurku ID'],
-                $img = [
-                    "./img/img_1.jpg", 
-                    "./img/img_2.jpg", 
-                    "./img/img_3.jpg", 
-                    "./img/img_4.jpg", 
-                    "./img/img_5.jpg"
-                ],
-                'img' => $img[array_rand($img)],
-                'agurkai' => 0
-            ];
+            $agurkoObj = new Agurkas($_SESSION['agurku ID']);
+
+            $_SESSION['obj'][] = serialize($agurkoObj);
+            $_SESSION['agurku ID']++;
+            // $_SESSION['a'][] = [
+            //     'id' => ++$_SESSION['agurku ID'],
+            //     'agurkai' => 0
+            // ];
+        }
+    }
+
+    if ($kiekis > 1 ) {
+
+        foreach(range(1, $kiekis) as $_) {
+
+            $agurkoObj = new Agurkas($_SESSION['agurku ID']);
+
+            $_SESSION['obj'][] = serialize($agurkoObj);
+            $_SESSION['agurku ID']++;
+
+            // $_SESSION['a'][] = [
+            //     'id' => ++$_SESSION['agurku ID'],
+            //     'agurkai' => 0
+            // ];
         }
     }
 
@@ -74,13 +74,23 @@ if (isset($_POST['sodinti'])) {
 
 // ISROVIMO SCENARIJUS
 if (isset($_POST['rauti'])) {
-    foreach($_SESSION['a'] as $index => $agurkas) {
-        if ($_POST['rauti'] == $agurkas['id']) {
-            unset($_SESSION['a'][$index]);
+
+    foreach($_SESSION['obj'] as $index => $agurkas) {
+        $agurkas = unserialize($agurkas);
+        if ($_POST['rauti'] == $agurkas->id) {
+            unset($_SESSION['obj'][$index]);
             header('Location: ./sodinimas.php');
-            die;
+            exit;
         }
     }
+    // foreach($_SESSION['a'] as $index => $agurkas) {
+    //     if ($_POST['rauti'] == $agurkas['id']) {
+    //         unset($_SESSION['a'][$index]);
+    //         header('Location: ./sodinimas.php');
+    //         die;
+    //     }
+    // }
+
 }
 
 _d($_SESSION);
@@ -113,17 +123,18 @@ _d($_SESSION);
 
     <form action="" method="post">
 
-    <?php foreach($_SESSION['a'] as $agurkas): ?>
+    <?php foreach($_SESSION['obj'] as $agurkas): ?>
+    <?php $agurkas = unserialize($agurkas) ?>
 
     <div class = "row">
 
-    <img class="img" src="<?= $agurkas['img'] ?>" alt="agurkas">
+    <img class="img" src="./img/cucumber/img_<?= $agurkas->imgPath?>.jpg" alt="Agurko nuotrauka">
 
-    <p>Agurko augalas nr. <?= $agurkas['id'] ?></p>
+    <p>Agurko augalas nr. <?= $agurkas->id ?></p>
 
-    <p style="color:rgb(19, 175, 2);font-size:18px">Agurkų vaisių: <?= $agurkas['agurkai'] ?></p>
+    <p style="color:rgb(19, 175, 2);font-size:18px">Agurkų vaisių: <?= $agurkas->count ?></p>
 
-    <button type="submit" class="btn" name="rauti" value="<?= $agurkas['id'] ?>">Išrauti</button>
+    <button type="submit" class="btn" name="rauti" value="<?= $agurkas->id ?>">Išrauti</button>
 
     </div>
 

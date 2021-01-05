@@ -8,14 +8,25 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 
 if (!isset($_SESSION['a'])) {
     $_SESSION['a'] = [];
+    // $_SESSION['obj'] = []; //<----- agurko objektai
     $_SESSION['agurku ID'] = 0;
 }
 
+include __DIR__ . '/Agurkas.php';
+
 // AUGINIMO SCENARIJUS
 if (isset($_POST['auginti'])) {
-    foreach($_SESSION['a'] as $index => &$agurkas) {
-        $agurkas['agurkai'] += $_POST['kiekis'][$agurkas['id']];
+    // foreach($_SESSION['a'] as $index => &$agurkas) {
+    //     $agurkas['agurkai'] += $_POST['kiekis'][$agurkas['id']];
+    // }
+
+    foreach($_SESSION['obj'] as $index => $agurkas) { // <---- serializuotas stringas
+        $agurkas = unserialize($agurkas); // <----- agurko objektas
+        $agurkas->addAgurkas($_POST['kiekis'][$agurkas->id]); // <------- pridedam agurka
+        $agurkas = serialize($agurkas); // <------ vel stringas
+        $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
     }
+
     header('Location:./auginimas.php');
     exit;
 }
@@ -42,14 +53,15 @@ if (isset($_POST['auginti'])) {
 <h3>Auginimas</h3>
     <div class = "container">
     <form action="" method="post">
-    <?php foreach($_SESSION['a'] as $agurkas): ?>
+    <?php foreach($_SESSION['obj'] as $agurkas): ?>
+    <?php $agurkas = unserialize($agurkas) ?>
     <div class = "row">
     <?php $kiekis = rand(2, 9) ?>
-    <td><img class="img" src="<?= $agurkas['img'] ?>" alt="agurkas">
-    <p>Agurko augalas nr. <?= $agurkas['id'] ?></p>
-    <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas['agurkai'] ?></h1>
+    <img class="img" src="./img/cucumber/img_<?= $agurkas->imgPath?>.jpg" alt="Agurko nuotrauka">
+    <p>Agurko augalas nr. <?= $agurkas->id ?></p>
+    <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas->count ?></h1>
     <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $kiekis ?></h3>
-    <input type="hidden" name="kiekis[<?= $agurkas['id'] ?>]" value="<?= $kiekis ?>">
+    <input type="hidden" name="kiekis[<?= $agurkas->id ?>]" value="<?= $kiekis ?>">
     </div>
     <?php endforeach ?>
     <br>
