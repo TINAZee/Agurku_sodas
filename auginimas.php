@@ -12,8 +12,8 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['agurku ID'] = 0;
 }
 
-include __DIR__ . '/Agurkas.php';
-include __DIR__ . '/Zirniai.php';
+include 'Agurkas.php';
+include 'Zirniai.php';
 
 // AUGINIMO SCENARIJUS
 if (isset($_POST['auginti'])) {

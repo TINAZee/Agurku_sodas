@@ -11,8 +11,8 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['agurku ID'] = 0;
 }
 
-include __DIR__ . '/Agurkas.php';
-include __DIR__ . '/Zirniai.php';
+include 'Agurkas.php';
+include 'Zirniai.php';
 
 //SKINTI SCENARIJUS
 if (isset($_POST['skinti'])) {
@@ -91,7 +91,7 @@ if (isset($_POST['nuimtiDerliu'])) {
 </header>
 <h1>Agurkų sodas</h1>
 <h3>Agurkų skinimas</h3>
-    <?php include __DIR__.'/error.php' ?>
+    <?php include 'error.php' ?>
 
     <div class = "container">
 

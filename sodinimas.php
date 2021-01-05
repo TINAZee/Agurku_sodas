@@ -13,16 +13,16 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['ID'] = 0;
 }
 
-include __DIR__ . '/Agurkas.php'; //<------importuojama agurko klasė
-include __DIR__ . '/Zirniai.php'; //<------importuojama agurko klasė
+include 'Agurkas.php'; //<------importuojama agurko klasė
+include 'Zirniai.php'; //<------importuojama agurko klasė
 
 //Zirniu SODINIMO SCENARIJUS
 
-include __DIR__ . '/zirniuSodinimas.php'; //<------importuojama agurko klasė
+include 'zirniuSodinimas.php'; //<------importuojama agurko klasė
 
 // Agurku SODINIMO SCENARIJUS
 
-include __DIR__ . '/agurkuSodinimas.php'; //<------importuojama agurko klasė
+include 'agurkuSodinimas.php'; //<------importuojama agurko klasė
 
 // ISROVIMO SCENARIJUS
 if (isset($_POST['rauti'])) {
@@ -53,7 +53,6 @@ if (isset($_POST['rauti'])) {
 
 }
 
-_d($_SESSION);
 
 ?>
 
@@ -77,7 +76,7 @@ _d($_SESSION);
 </header>
 <h1>Agurkų ir Žirnių sodas</h1>
 <h3>Sodinimas</h3>
-    <?php include __DIR__.'/error.php' ?>
+    <?php include 'error.php' ?>
 
     <div class = "container">
 

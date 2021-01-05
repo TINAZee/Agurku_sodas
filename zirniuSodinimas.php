@@ -38,7 +38,7 @@ if ($kiekis <= 1) {
 
 if ($kiekis > 1 ) {
 
-    foreach(range(1, $kiekis) as $_) {
+    foreach(range(0, $kiekis) as $_) {
 
         $zirnioObj = new Zirniai($_SESSION['ID']);
 
