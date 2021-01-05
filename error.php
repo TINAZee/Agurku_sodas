@@ -3,7 +3,7 @@
     <h3 style="color:red;">Neigiamas agurkas</h3>
     <?php endif ?>
     <?php if(2 == $_SESSION['err']): ?>
-    <h3 style="color:red;">Per daug sodinate, limitas - 4 agurkų</h3>
+    <h3 style="color:red;">Per daug sodinate, limitas - 4 daržovių</h3>
     <?php endif ?>
     <?php if(3 == $_SESSION['err']): ?>
     <h3 style="color:red;">Per daug skinate</h3>

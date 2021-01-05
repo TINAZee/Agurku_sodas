@@ -26,9 +26,8 @@ if ($kiekis <= 1) {
     foreach(range(0, 0) as $_) {
 
         $zirnioObj = new Zirniai($_SESSION['ID']);
-
-        $_SESSION['obj1'][] = serialize($zirnioObj);
         $_SESSION['ID']++;
+        $_SESSION['obj1'][] = serialize($zirnioObj);
         // $_SESSION['a'][] = [
         //     'id' => ++$_SESSION['ID'],
         //     'agurkai' => 0
@@ -38,12 +37,12 @@ if ($kiekis <= 1) {
 
 if ($kiekis > 1 ) {
 
-    foreach(range(0, $kiekis) as $_) {
+    foreach(range(0, $kiekis-1) as $_) {
 
         $zirnioObj = new Zirniai($_SESSION['ID']);
-
-        $_SESSION['obj1'][] = serialize($zirnioObj);
         $_SESSION['ID']++;
+        $_SESSION['obj1'][] = serialize($zirnioObj);
+    
 
         // $_SESSION['a'][] = [
         //     'id' => ++$_SESSION['agurku ID'],
