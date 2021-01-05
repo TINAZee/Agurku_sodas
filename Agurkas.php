@@ -39,10 +39,29 @@ class Agurkas {
         $this->$propertyName = $value;
     }
 
-
-    public function addAgurkas($agurkai)
+    public function addVegatable($agurkai)
     {
         $this->count = $this->count + $agurkai;
+    }
+
+    public function removeVegatable($agurkai)
+    {
+        if($agurkai < 0){
+            $_SESSION['err'] = 1; 
+        }
+        elseif($agurkai > $this->count ){
+            $_SESSION['err'] = 3;  
+        } else{
+
+        $this->count -= $agurkai;
+        }
+    }
+
+    public function removeAllVegatables($agurkai)
+    {
+        if($agurkai == $this->id) {
+            $this->count = 0;
+            }
     }
 
     public function nuskintiVisus()

@@ -22,7 +22,7 @@ if (isset($_POST['auginti'])) {
 
     foreach($_SESSION['obj'] as $index => $agurkas) { // <---- serializuotas stringas
         $agurkas = unserialize($agurkas); // <----- agurko objektas
-        $agurkas->addAgurkas($_POST['kiekis'][$agurkas->id]); // <------- pridedam agurka
+        $agurkas->addVegatable($_POST['kiekis'][$agurkas->id]); // <------- pridedam agurka
         $agurkas = serialize($agurkas); // <------ vel stringas
         $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
     }
