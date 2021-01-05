@@ -12,18 +12,27 @@ if (!isset($_SESSION['a'])) {
 }
 
 include __DIR__ . '/Agurkas.php';
+include __DIR__ . '/Zirniai.php';
 
 //SKINTI SCENARIJUS
 if (isset($_POST['skinti'])) {
 
     $nuskinti = $_POST['kiek_skinti'];
 
-    foreach($_SESSION['obj'] as $index => &$agurkas) {
+    foreach($_SESSION['obj'] as $index => $agurkas) {
 
         $agurkas = unserialize($agurkas); // <----- agurko objektas
         $agurkas->removeVegatable($_POST['kiek_skinti'][$agurkas->id]); // <------- atimam agurka
         $agurkas = serialize($agurkas); // <------ vel stringas
         $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
+    }
+
+    foreach($_SESSION['obj1'] as $index => $zirnis) {
+
+        $zirnis = unserialize($zirnis); // <----- agurko objektas
+        $zirnis->removeVegatable($_POST['kiek_skinti'][$zirnis->id]); // <------- atimam agurka
+        $zirnis = serialize($zirnis); // <------ vel stringas
+        $_SESSION['obj1'][$index] = $zirnis; // <----- uzsaugom agurkus
     }
 
     header('Location: ./skynimas.php');
@@ -40,6 +49,14 @@ if (isset($_POST['skinti_visus'])) {
             $agurkas = serialize($agurkas); // <------ vel stringas
             $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
     }
+
+    foreach ($_SESSION['obj1'] as $index => $zirnis ) {
+        $zirnis = unserialize($zirnis); // <----- agurko objektas
+        $zirnis->removeAllVegatables($_POST['skinti_visus']); // <------- atimam visus agurka
+        $zirnis = serialize($zirnis); // <------ vel stringas
+        $_SESSION['obj1'][$index] = $zirnis; // <----- uzsaugom agurkus
+    }
+
     header('Location: ./skynimas.php');
     die;
 }
@@ -48,6 +65,7 @@ if (isset($_POST['skinti_visus'])) {
 
 if (isset($_POST['nuimtiDerliu'])) {
    $_SESSION['obj'] = Agurkas::nuimtiDerliu($_SESSION['obj']);
+   $_SESSION['obj1'] = Zirniai::nuimtiDerliu($_SESSION['obj']);
     header('Location: ./skynimas.php');
     exit;
 }
@@ -81,11 +99,8 @@ if (isset($_POST['nuimtiDerliu'])) {
 
     <?php foreach($_SESSION['obj'] as $agurkas): ?>
     <?php $agurkas = unserialize($agurkas) ?>
-
     <div class = "row">
-
     <img class="img" src="./img/cucumber/img_<?= $agurkas->imgPath?>.jpg" alt="Agurko nuotrauka">
-
     <p> Agurko augalas Nr. <?= $agurkas->id ?></p>
     <p style="color:red;font-size:19px"> Galima skinti: </p>
     <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas->count ?></h1>
@@ -97,6 +112,23 @@ if (isset($_POST['nuimtiDerliu'])) {
     <button type="submit" class="btn" name="skinti_visus" value="<?= $agurkas->id ?>">Skinti visus</button>
     </div>
     <?php endforeach ?>
+
+    <?php foreach($_SESSION['obj1'] as $zirnis): ?>
+    <?php $zirnis = unserialize($zirnis) ?>
+    <div class = "row">
+    <img class="img" src="./img/peas/img_<?= $zirnis->imgPath?>.jpg" alt="Zirnio nuotrauka">
+    <p> Žirnio augalas Nr. <?= $zirnis->id ?></p>
+    <p style="color:red;font-size:19px"> Galima skinti: </p>
+    <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $zirnis->count ?></h1>
+    <p style="display:inline-block;line-height:1.8">agurk.</p>
+    <br>
+    <input type="text" class="text"  name="kiek_skinti[<?= $zirnis->id ?>]"value=<?= $nuskinti ?? 0 ?>>
+    <button type="submit" class="btn" name="skinti">Skinti</button>
+    <br>
+    <button type="submit" class="btn" name="skinti_visus" value="<?= $zirnis->id ?>">Skinti visus</button>
+    </div>
+    <?php endforeach ?>
+
     <br>
     <button type="submit" class="btn" name="nuimtiDerliu">Nuimti visą derlių</button>
     </form>

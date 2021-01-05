@@ -9,68 +9,20 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 if (!isset($_SESSION['a'])) {
     // $_SESSION['a'] = [];
     $_SESSION['obj'] = []; //<----- agurko objektai
-    $_SESSION['agurku ID'] = 0;
+    $_SESSION['obj1'] = [];//<----- zirnio objektai
+    $_SESSION['ID'] = 0;
 }
 
 include __DIR__ . '/Agurkas.php'; //<------importuojama agurko klasė
+include __DIR__ . '/Zirniai.php'; //<------importuojama agurko klasė
 
+//Zirniu SODINIMO SCENARIJUS
 
-// SODINIMO SCENARIJUS
-if (isset($_POST['sodinti'])) {
+include __DIR__ . '/zirniuSodinimas.php'; //<------importuojama agurko klasė
 
-    $kiekis = (int) $_POST['kiekis'];
+// Agurku SODINIMO SCENARIJUS
 
-    if (0 > $kiekis || 4 < $kiekis) { // <--- validacija
-        if (0 > $kiekis) {
-            $_SESSION['err'] = 1; // <-- neigiamas agurku kiekis
-        }
-        elseif(4 < $kiekis) {
-            $_SESSION['err'] = 2; // <-- per daug
-        }
-        
-        header('Location: ./sodinimas.php');
-        exit;
-    }
-
-    if(empty($kiekis)) {
-        $_SESSION['err'] = 4; 
-        header('Location: ./sodinimas.php');
-        exit;
-    }
-
-    if ($kiekis <= 1) {
-        foreach(range(0, 0) as $_) {
-
-            $agurkoObj = new Agurkas($_SESSION['agurku ID']);
-
-            $_SESSION['obj'][] = serialize($agurkoObj);
-            $_SESSION['agurku ID']++;
-            // $_SESSION['a'][] = [
-            //     'id' => ++$_SESSION['agurku ID'],
-            //     'agurkai' => 0
-            // ];
-        }
-    }
-
-    if ($kiekis > 1 ) {
-
-        foreach(range(1, $kiekis) as $_) {
-
-            $agurkoObj = new Agurkas($_SESSION['agurku ID']);
-
-            $_SESSION['obj'][] = serialize($agurkoObj);
-            $_SESSION['agurku ID']++;
-
-            // $_SESSION['a'][] = [
-            //     'id' => ++$_SESSION['agurku ID'],
-            //     'agurkai' => 0
-            // ];
-        }
-    }
-
-    header('Location: ./sodinimas.php');
-    exit;
-}
+include __DIR__ . '/agurkuSodinimas.php'; //<------importuojama agurko klasė
 
 // ISROVIMO SCENARIJUS
 if (isset($_POST['rauti'])) {
@@ -83,7 +35,15 @@ if (isset($_POST['rauti'])) {
             exit;
         }
     }
-    // foreach($_SESSION['a'] as $index => $agurkas) {
+    foreach($_SESSION['obj1'] as $index => $zirnis) {
+        $zirnis = unserialize($zirnis);
+        if ($_POST['rauti'] == $zirnis->id) {
+            unset($_SESSION['obj1'][$index]);
+            header('Location: ./sodinimas.php');
+            exit;
+        }
+    }
+    // foreach($_SESSION['a'] as $index => $zirnis) {
     //     if ($_POST['rauti'] == $agurkas['id']) {
     //         unset($_SESSION['a'][$index]);
     //         header('Location: ./sodinimas.php');
@@ -115,7 +75,7 @@ _d($_SESSION);
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skinimas</a>
 </header>
-<h1>Agurkų sodas</h1>
+<h1>Agurkų ir Žirnių sodas</h1>
 <h3>Sodinimas</h3>
     <?php include __DIR__.'/error.php' ?>
 
@@ -125,23 +85,28 @@ _d($_SESSION);
 
     <?php foreach($_SESSION['obj'] as $agurkas): ?>
     <?php $agurkas = unserialize($agurkas) ?>
-
     <div class = "row">
-
     <img class="img" src="./img/cucumber/img_<?= $agurkas->imgPath?>.jpg" alt="Agurko nuotrauka">
-
     <p>Agurko augalas nr. <?= $agurkas->id ?></p>
-
     <p style="color:rgb(19, 175, 2);font-size:18px">Agurkų vaisių: <?= $agurkas->count ?></p>
-
     <button type="submit" class="btn" name="rauti" value="<?= $agurkas->id ?>">Išrauti</button>
-
     </div>
-
     <?php endforeach ?>
+
+    <?php foreach($_SESSION['obj1'] as $zirnis): ?>
+    <?php $zirnis = unserialize($zirnis) ?>
+    <div class = "row">
+    <img class="img" src="./img/peas/img_<?= $zirnis->imgPath?>.jpg" alt="Zirnio nuotrauka">
+    <p>Žirnio augalas nr. <?= $zirnis->id ?></p>
+    <p style="color:rgb(19, 175, 2);font-size:18px">Žirnio vaisių: <?= $zirnis->count ?></p>
+    <button type="submit" class="btn" name="rauti" value="<?= $zirnis->id ?>">Išrauti</button>
+    </div>
+    <?php endforeach ?>
+
     <br>
     <input type="text" class="text" name="kiekis">
-    <button type="submit" class="btn" name="sodinti">SODINTI</button>
+    <button type="submit" class="btn" name="sodinti_a">Sodinti Agurką</button>
+    <button type="submit" class="btn" name="sodinti_z">Sodinti Žirnį</button>
     <br>
     </form>
     </div>

@@ -13,6 +13,7 @@ if (!isset($_SESSION['a'])) {
 }
 
 include __DIR__ . '/Agurkas.php';
+include __DIR__ . '/Zirniai.php';
 
 // AUGINIMO SCENARIJUS
 if (isset($_POST['auginti'])) {
@@ -25,6 +26,13 @@ if (isset($_POST['auginti'])) {
         $agurkas->addVegatable($_POST['kiekis'][$agurkas->id]); // <------- pridedam agurka
         $agurkas = serialize($agurkas); // <------ vel stringas
         $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
+    }
+
+    foreach($_SESSION['obj1'] as $index => $zirnis) { 
+        $zirnis = unserialize($zirnis); 
+        $zirnis->addVegatable($_POST['kiekis'][$zirnis->id]); 
+        $zirnis = serialize($zirnis); 
+        $_SESSION['obj1'][$index] = $zirnis; 
     }
 
     header('Location:./auginimas.php');
@@ -53,6 +61,7 @@ if (isset($_POST['auginti'])) {
 <h3>Auginimas</h3>
     <div class = "container">
     <form action="" method="post">
+
     <?php foreach($_SESSION['obj'] as $agurkas): ?>
     <?php $agurkas = unserialize($agurkas) ?>
     <div class = "row">
@@ -62,6 +71,18 @@ if (isset($_POST['auginti'])) {
     <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas->count ?></h1>
     <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $kiekis ?></h3>
     <input type="hidden" name="kiekis[<?= $agurkas->id ?>]" value="<?= $kiekis ?>">
+    </div>
+    <?php endforeach ?>
+
+    <?php foreach($_SESSION['obj1'] as $zirnis): ?>
+    <?php $zirnis = unserialize($zirnis) ?>
+    <div class = "row">
+    <?php $kiekis1 = rand(1, 3) ?>
+    <img class="img" src="./img/peas/img_<?= $zirnis->imgPath?>.jpg" alt="Zirnio nuotrauka">
+    <p>Žirnio augalas nr. <?= $zirnis->id ?></p>
+    <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $zirnis->count ?></h1>
+    <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $kiekis1 ?></h3>
+    <input type="hidden" name="kiekis[<?= $zirnis->id ?>]" value="<?= $kiekis1 ?>">
     </div>
     <?php endforeach ?>
     <br>
