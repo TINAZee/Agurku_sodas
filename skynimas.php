@@ -8,9 +8,10 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 
 if (!isset($_SESSION['a'])) {
     $_SESSION['a'] = [];
-    $_SESSION['agurku ID'] = 0;
+    $_SESSION['ID'] = 0;
 }
 
+include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
 include 'Agurkas.php';
 include 'Zirniai.php';
 
@@ -38,7 +39,7 @@ if (isset($_POST['skinti'])) {
     header('Location: ./skynimas.php');
     exit;
 }
-_d($_SESSION);
+
 //SKINTI VISUS SCENARIJUS
 
 if (isset($_POST['skinti_visus'])) {
@@ -89,7 +90,7 @@ if (isset($_POST['nuimtiDerliu'])) {
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skinimas</a>
 </header>
-<h1>Agurkų sodas</h1>
+<h1>Daržovių sodas</h1>
 <h3>Agurkų skinimas</h3>
     <?php include 'error.php' ?>
 

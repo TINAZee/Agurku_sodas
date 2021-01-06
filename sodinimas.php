@@ -7,22 +7,90 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 }
 
 if (!isset($_SESSION['a'])) {
-    // $_SESSION['a'] = [];
+    $_SESSION['a'] = [];
     $_SESSION['obj'] = []; //<----- agurko objektai
     $_SESSION['obj1'] = [];//<----- zirnio objektai
     $_SESSION['ID'] = 0;
 }
 
+include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
 include 'Agurkas.php'; //<------importuojama agurko klasė
-include 'Zirniai.php'; //<------importuojama agurko klasė
+include 'Zirniai.php'; //<------importuojama zirnio klasė
 
-//Zirniu SODINIMO SCENARIJUS
+//AGURKU SODINIMO SCENARIJUS
 
-include 'zirniuSodinimas.php'; //<------importuojama agurko klasė
+if (isset($_POST['sodinti_a'])) {
 
-// Agurku SODINIMO SCENARIJUS
+    $kiekis = (int) $_POST['kiekis'];
 
-include 'agurkuSodinimas.php'; //<------importuojama agurko klasė
+    if (0 > $kiekis || 4 < $kiekis) { // <--- validacija
+        if (0 > $kiekis) {
+            $_SESSION['err'] = 1; // <-- neigiamas kiekis
+        }
+        elseif(4 < $kiekis) {
+            $_SESSION['err'] = 2; // <-- per daug
+        }
+        
+        header('Location: ./sodinimas.php');
+        exit;
+    }
+
+    if(empty($kiekis)) {
+        $_SESSION['err'] = 4; 
+        header('Location: ./sodinimas.php');
+        exit;
+    }
+
+    foreach(range(0, $kiekis-1) as $_) {
+
+        $agurkoObj = new Agurkas($_SESSION['ID']);
+        $_SESSION['ID']++;
+        $_SESSION['obj'][] = serialize($agurkoObj);
+    }
+
+header('Location: ./sodinimas.php');
+exit;
+}
+
+// ZIRNIU SODINIMO SCENARIJUS
+
+if (isset($_POST['sodinti_z'])) {
+
+    $kiekis = (int) $_POST['kiekis'];
+    
+        if (0 > $kiekis || 4 < $kiekis) { // <--- validacija
+            if (0 > $kiekis) {
+                $_SESSION['err'] = 1; // <-- neigiamas kiekis
+            }
+            elseif(4 < $kiekis) {
+                $_SESSION['err'] = 2; // <-- per daug
+            }
+            
+            header('Location: ./sodinimas.php');
+            exit;
+        }
+    
+        if(empty($kiekis)) {
+            $_SESSION['err'] = 4; 
+            header('Location: ./sodinimas.php');
+            exit;
+        }
+    
+        foreach(range(0, $kiekis-1) as $_) {
+    
+            $zirnioObj = new Zirniai($_SESSION['ID']);
+            $_SESSION['ID']++;
+            $_SESSION['obj1'][] = serialize($zirnioObj);
+    
+            // $_SESSION['a'][] = [
+            //     'id' => ++$_SESSION['agurku ID'],
+            //     'agurkai' => 0
+            // ];
+        }
+    
+    header('Location: ./sodinimas.php');
+    exit;
+    }
 
 // ISROVIMO SCENARIJUS
 if (isset($_POST['rauti'])) {
@@ -53,7 +121,6 @@ if (isset($_POST['rauti'])) {
 
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +141,7 @@ if (isset($_POST['rauti'])) {
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skinimas</a>
 </header>
-<h1>Agurkų ir Žirnių sodas</h1>
+<h1>Daržovių sodas</h1>
 <h3>Sodinimas</h3>
     <?php include 'error.php' ?>
 

@@ -9,9 +9,9 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 if (!isset($_SESSION['a'])) {
     $_SESSION['a'] = [];
     // $_SESSION['obj'] = []; //<----- agurko objektai
-    $_SESSION['agurku ID'] = 0;
+    $_SESSION['ID'] = 0;
 }
-
+include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
 include 'Agurkas.php';
 include 'Zirniai.php';
 
@@ -57,7 +57,7 @@ if (isset($_POST['auginti'])) {
 <a href="auginimas.php">Auginimas</a>
 <a href="skynimas.php">Skinimas</a>
 </header>
-<h1>Agurkų sodas</h1>
+<h1>Daržovių sodas</h1>
 <h3>Auginimas</h3>
     <div class = "container">
     <form action="" method="post">
@@ -65,24 +65,22 @@ if (isset($_POST['auginti'])) {
     <?php foreach($_SESSION['obj'] as $agurkas): ?>
     <?php $agurkas = unserialize($agurkas) ?>
     <div class = "row">
-    <?php $kiekis = rand(2, 9) ?>
     <img class="img" src="./img/cucumber/img_<?= $agurkas->imgPath?>.jpg" alt="Agurko nuotrauka">
     <p>Agurko augalas nr. <?= $agurkas->id ?></p>
     <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $agurkas->count ?></h1>
-    <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $kiekis ?></h3>
-    <input type="hidden" name="kiekis[<?= $agurkas->id ?>]" value="<?= $kiekis ?>">
+    <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $agurkas->kiekAugti() ?></h3>
+    <input type="hidden" name="kiekis[<?= $agurkas->id ?>]" value="<?=  $agurkas->kiekAugti() ?>">
     </div>
     <?php endforeach ?>
 
     <?php foreach($_SESSION['obj1'] as $zirnis): ?>
     <?php $zirnis = unserialize($zirnis) ?>
     <div class = "row">
-    <?php $kiekis1 = rand(1, 3) ?>
     <img class="img" src="./img/peas/img_<?= $zirnis->imgPath?>.jpg" alt="Zirnio nuotrauka">
     <p>Žirnio augalas nr. <?= $zirnis->id ?></p>
     <h3 style="background-color: rgb(174, 226, 174);display:inline-block;"><?= $zirnis->count ?></h1>
-    <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $kiekis1 ?></h3>
-    <input type="hidden" name="kiekis[<?= $zirnis->id ?>]" value="<?= $kiekis1 ?>">
+    <h3 style="display:inline;color:red;background-color: rgb(174, 226, 174);font-size: 23px">+<?= $zirnis->kiekAugti() ?></h3>
+    <input type="hidden" name="kiekis[<?= $zirnis->id ?>]" value="<?=  $zirnis->kiekAugti() ?>">
     </div>
     <?php endforeach ?>
     <br>
