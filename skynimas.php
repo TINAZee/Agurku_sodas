@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include __DIR__ . '/vendor/autoload.php';
+
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
     header('Location: ./login.php');
     die;
@@ -11,9 +13,9 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['ID'] = 0;
 }
 
-include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
-include 'Agurkas.php';
-include 'Zirniai.php';
+// include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
+// include 'Agurkas.php';
+// include 'Zirniai.php';
 
 //SKINTI SCENARIJUS
 if (isset($_POST['skinti'])) {

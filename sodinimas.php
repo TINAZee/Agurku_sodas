@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include __DIR__ . '/vendor/autoload.php';
+
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
     header('Location: ./login.php');
     die;
@@ -13,9 +15,9 @@ if (!isset($_SESSION['a'])) {
     $_SESSION['ID'] = 0;
 }
 
-include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
-include 'Agurkas.php'; //<------importuojama agurko klasė
-include 'Zirniai.php'; //<------importuojama zirnio klasė
+// include __DIR__.'/inc/Darzoves.php'; //<------importuojama tevine darzoves klasė
+// include __DIR__.'/inc/Agurkas.php'; //<------importuojama agurko klasė
+// include __DIR__.'/inc/Zirniai.php'; //<------importuojama zirnio klasė
 
 //AGURKU SODINIMO SCENARIJUS
 
@@ -43,7 +45,7 @@ if (isset($_POST['sodinti_a'])) {
 
     foreach(range(0, $kiekis-1) as $_) {
 
-        $agurkoObj = new Agurkas($_SESSION['ID']);
+        $agurkoObj = new TINAZee\Agurkas($_SESSION['ID']);
         $_SESSION['ID']++;
         $_SESSION['obj'][] = serialize($agurkoObj);
     }
@@ -78,7 +80,7 @@ if (isset($_POST['sodinti_z'])) {
     
         foreach(range(0, $kiekis-1) as $_) {
     
-            $zirnioObj = new Zirniai($_SESSION['ID']);
+            $zirnioObj = new TINAZee\Zirniai($_SESSION['ID']);
             $_SESSION['ID']++;
             $_SESSION['obj1'][] = serialize($zirnioObj);
     

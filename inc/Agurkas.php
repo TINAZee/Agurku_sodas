@@ -1,4 +1,5 @@
 <?php
+namespace TINAZee;
 
 class Agurkas extends Darzoves {
 

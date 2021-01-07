@@ -1,0 +1,11 @@
+{
+    "name": "krist/agurku_sodas",
+    "description": "darzoviu sodas",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "TINAZee\\":"inc"
+        }
+    }
+}

@@ -1,4 +1,5 @@
 <?php
+namespace TINAZee;
 
 class Darzoves {
 
