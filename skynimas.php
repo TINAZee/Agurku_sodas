@@ -8,10 +8,8 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
     die;
 }
 
-if (!isset($_SESSION['a'])) {
-    $_SESSION['a'] = [];
-    $_SESSION['ID'] = 0;
-}
+use TINAZee\App;
+App::setSession();
 
 // include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
 // include 'Agurkas.php';
@@ -19,25 +17,7 @@ if (!isset($_SESSION['a'])) {
 
 //SKINTI SCENARIJUS
 if (isset($_POST['skinti'])) {
-
-    $nuskinti = $_POST['kiek_skinti'];
-
-    foreach($_SESSION['obj'] as $index => $agurkas) {
-
-        $agurkas = unserialize($agurkas); // <----- agurko objektas
-        $agurkas->removeVegatable($_POST['kiek_skinti'][$agurkas->id]); // <------- atimam agurka
-        $agurkas = serialize($agurkas); // <------ vel stringas
-        $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
-    }
-
-    foreach($_SESSION['obj1'] as $index => $zirnis) {
-
-        $zirnis = unserialize($zirnis); // <----- agurko objektas
-        $zirnis->removeVegatable($_POST['kiek_skinti'][$zirnis->id]); // <------- atimam agurka
-        $zirnis = serialize($zirnis); // <------ vel stringas
-        $_SESSION['obj1'][$index] = $zirnis; // <----- uzsaugom agurkus
-    }
-
+   App::skinti();
     header('Location: ./skynimas.php');
     exit;
 }
@@ -46,20 +26,7 @@ if (isset($_POST['skinti'])) {
 
 if (isset($_POST['skinti_visus'])) {
 
-    foreach ($_SESSION['obj'] as $index => $agurkas ) {
-            $agurkas = unserialize($agurkas); // <----- agurko objektas
-            $agurkas->removeAllVegatables($_POST['skinti_visus']); // <------- atimam visus agurka
-            $agurkas = serialize($agurkas); // <------ vel stringas
-            $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
-    }
-
-    foreach ($_SESSION['obj1'] as $index => $zirnis ) {
-        $zirnis = unserialize($zirnis); // <----- agurko objektas
-        $zirnis->removeAllVegatables($_POST['skinti_visus']); // <------- atimam visus agurka
-        $zirnis = serialize($zirnis); // <------ vel stringas
-        $_SESSION['obj1'][$index] = $zirnis; // <----- uzsaugom agurkus
-    }
-
+ App::skintiVisus();
     header('Location: ./skynimas.php');
     die;
 }
@@ -67,8 +34,7 @@ if (isset($_POST['skinti_visus'])) {
 //NUIMTI VISA DERLIU SCENARIJUS
 
 if (isset($_POST['nuimtiDerliu'])) {
-   $_SESSION['obj'] = Agurkas::nuimtiDerliu($_SESSION['obj']);
-   $_SESSION['obj1'] = Zirniai::nuimtiDerliu($_SESSION['obj']);
+    App::nuimtiVisaDerliu();
     header('Location: ./skynimas.php');
     exit;
 }

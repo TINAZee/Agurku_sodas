@@ -1,7 +1,9 @@
 <?php
 namespace TINAZee;
 
-class Darzoves {
+use TINAZee\Sodas;
+
+abstract class Darzoves implements Sodas {
 
     protected $id, $count;
     public $imgPath = 1;
@@ -69,6 +71,8 @@ class Darzoves {
     {
         $this->count = 0;
     }
+
+    abstract public function kiekAugti();
 
     // Visai nebutina
     // public function __serialize() // <---- ivyksta kai objektas yra serializuojamas

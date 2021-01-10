@@ -8,12 +8,9 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
     die;
 }
 
-if (!isset($_SESSION['a'])) {
-    $_SESSION['a'] = [];
-    $_SESSION['obj'] = []; //<----- agurko objektai
-    $_SESSION['obj1'] = [];//<----- zirnio objektai
-    $_SESSION['ID'] = 0;
-}
+use TINAZee\App;
+
+App::setSession();
 
 // include __DIR__.'/inc/Darzoves.php'; //<------importuojama tevine darzoves klasė
 // include __DIR__.'/inc/Agurkas.php'; //<------importuojama agurko klasė
@@ -33,25 +30,20 @@ if (isset($_POST['sodinti_a'])) {
             $_SESSION['err'] = 2; // <-- per daug
         }
         
-        header('Location: ./sodinimas.php');
-        exit;
+        App::redirect('sodinimas');
     }
 
     if(empty($kiekis)) {
         $_SESSION['err'] = 4; 
-        header('Location: ./sodinimas.php');
-        exit;
+        App::redirect('sodinimas');
     }
 
     foreach(range(0, $kiekis-1) as $_) {
 
-        $agurkoObj = new TINAZee\Agurkas($_SESSION['ID']);
-        $_SESSION['ID']++;
-        $_SESSION['obj'][] = serialize($agurkoObj);
+        App::sodintiAgurka();
     }
 
-header('Location: ./sodinimas.php');
-exit;
+    App::redirect('sodinimas');
 }
 
 // ZIRNIU SODINIMO SCENARIJUS
@@ -60,59 +52,37 @@ if (isset($_POST['sodinti_z'])) {
 
     $kiekis = (int) $_POST['kiekis'];
     
-        if (0 > $kiekis || 4 < $kiekis) { // <--- validacija
-            if (0 > $kiekis) {
-                $_SESSION['err'] = 1; // <-- neigiamas kiekis
-            }
-            elseif(4 < $kiekis) {
-                $_SESSION['err'] = 2; // <-- per daug
-            }
+    if (0 > $kiekis || 4 < $kiekis) { // <--- validacija
+        if (0 > $kiekis) {
+             $_SESSION['err'] = 1; // <-- neigiamas kiekis
+        }
+        elseif(4 < $kiekis) {
+            $_SESSION['err'] = 2; // <-- per daug
+        }
             
-            header('Location: ./sodinimas.php');
-            exit;
-        }
+        App::redirect('sodinimas');
+    }
     
-        if(empty($kiekis)) {
-            $_SESSION['err'] = 4; 
-            header('Location: ./sodinimas.php');
-            exit;
-        }
+    if(empty($kiekis)) {
+         $_SESSION['err'] = 4; 
+         App::redirect('sodinimas');
+    }
     
-        foreach(range(0, $kiekis-1) as $_) {
+    foreach(range(0, $kiekis-1) as $_) {
     
-            $zirnioObj = new TINAZee\Zirniai($_SESSION['ID']);
-            $_SESSION['ID']++;
-            $_SESSION['obj1'][] = serialize($zirnioObj);
+        App::sodintiZirni();
     
             // $_SESSION['a'][] = [
             //     'id' => ++$_SESSION['agurku ID'],
             //     'agurkai' => 0
             // ];
-        }
-    
-    header('Location: ./sodinimas.php');
-    exit;
     }
+    
+App::redirect('sodinimas');
+}
 
 // ISROVIMO SCENARIJUS
-if (isset($_POST['rauti'])) {
-
-    foreach($_SESSION['obj'] as $index => $agurkas) {
-        $agurkas = unserialize($agurkas);
-        if ($_POST['rauti'] == $agurkas->id) {
-            unset($_SESSION['obj'][$index]);
-            header('Location: ./sodinimas.php');
-            exit;
-        }
-    }
-    foreach($_SESSION['obj1'] as $index => $zirnis) {
-        $zirnis = unserialize($zirnis);
-        if ($_POST['rauti'] == $zirnis->id) {
-            unset($_SESSION['obj1'][$index]);
-            header('Location: ./sodinimas.php');
-            exit;
-        }
-    }
+App::rauti();
     // foreach($_SESSION['a'] as $index => $zirnis) {
     //     if ($_POST['rauti'] == $agurkas['id']) {
     //         unset($_SESSION['a'][$index]);
@@ -121,7 +91,7 @@ if (isset($_POST['rauti'])) {
     //     }
     // }
 
-}
+
 
 ?>
 

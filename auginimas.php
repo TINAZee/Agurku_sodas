@@ -3,16 +3,15 @@ session_start();
 
 include __DIR__ . '/vendor/autoload.php';
 
+use TINAZee\App;
+
+App::setSession();
+
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
     header('Location:./login.php');
     die;
 }
 
-if (!isset($_SESSION['a'])) {
-    $_SESSION['a'] = [];
-    // $_SESSION['obj'] = []; //<----- agurko objektai
-    $_SESSION['ID'] = 0;
-}
 // include 'Darzoves.php'; //<------importuojama tevine darzoves klasė
 // include 'Agurkas.php';
 // include 'Zirniai.php';
@@ -23,19 +22,7 @@ if (isset($_POST['auginti'])) {
     //     $agurkas['agurkai'] += $_POST['kiekis'][$agurkas['id']];
     // }
 
-    foreach($_SESSION['obj'] as $index => $agurkas) { // <---- serializuotas stringas
-        $agurkas = unserialize($agurkas); // <----- agurko objektas
-        $agurkas->addVegatable($_POST['kiekis'][$agurkas->id]); // <------- pridedam agurka
-        $agurkas = serialize($agurkas); // <------ vel stringas
-        $_SESSION['obj'][$index] = $agurkas; // <----- uzsaugom agurkus
-    }
-
-    foreach($_SESSION['obj1'] as $index => $zirnis) { 
-        $zirnis = unserialize($zirnis); 
-        $zirnis->addVegatable($_POST['kiekis'][$zirnis->id]); 
-        $zirnis = serialize($zirnis); 
-        $_SESSION['obj1'][$index] = $zirnis; 
-    }
+ App::auginti();
 
     header('Location:./auginimas.php');
     exit;
