@@ -1,7 +1,7 @@
 <?php
-session_start();
 
-include __DIR__ . '/vendor/autoload.php';
+defined('DOOR_BELL') || die('Iejimas tik pro duris');
+
 
 if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
     header('Location: ./login.php');
@@ -9,8 +9,17 @@ if(!isset($_SESSION['logged']) || 1 != $_SESSION['logged']) {
 }
 
 use TINAZee\App;
+use TINAZee\Agurkas;
+use TINAZee\Zirniai;
 
-App::setSession();
+// $store = new TINAZee\Store('agurkas');
+
+if (!isset($_SESSION['a'])) {
+    $_SESSION['a'] = [];
+    $_SESSION['obj'] = []; //<----- agurko objektai
+    $_SESSION['obj1'] = [];//<----- zirnio objektai
+    $_SESSION['ID'] = 0;
+}
 
 // include __DIR__.'/inc/Darzoves.php'; //<------importuojama tevine darzoves klasė
 // include __DIR__.'/inc/Agurkas.php'; //<------importuojama agurko klasė
@@ -30,20 +39,28 @@ if (isset($_POST['sodinti_a'])) {
             $_SESSION['err'] = 2; // <-- per daug
         }
         
-        App::redirect('sodinimas');
+        header("Location: ./sodinimas");
+        exit;
     }
 
     if(empty($kiekis)) {
         $_SESSION['err'] = 4; 
-        App::redirect('sodinimas');
+        header("Location: ./sodinimas");
+        exit;
     }
 
     foreach(range(0, $kiekis-1) as $_) {
 
-        App::sodintiAgurka();
+        // $agurkoObj = new Agurkas($store->getNewId());
+        // $store->addNew($agurkoObj);
+
+        $agurkoObj = new Agurkas($_SESSION['ID']);
+        $_SESSION['ID']++;
+        $_SESSION['obj'][] = serialize($agurkoObj);
     }
 
-    App::redirect('sodinimas');
+    // TINAZee\App::redirect('sodinimas');
+    header('Location: ./sodinimas');
 }
 
 // ZIRNIU SODINIMO SCENARIJUS
@@ -60,17 +77,21 @@ if (isset($_POST['sodinti_z'])) {
             $_SESSION['err'] = 2; // <-- per daug
         }
             
-        App::redirect('sodinimas');
+        header("Location: ./sodinimas");
+        exit;
     }
     
     if(empty($kiekis)) {
          $_SESSION['err'] = 4; 
-         App::redirect('sodinimas');
+         header("Location: ./sodinimas");
+        exit;
     }
     
     foreach(range(0, $kiekis-1) as $_) {
     
-        App::sodintiZirni();
+        $zirnioObj = new Zirniai($_SESSION['ID']);
+        $_SESSION['ID']++;
+        $_SESSION['obj1'][] = serialize($zirnioObj); 
     
             // $_SESSION['a'][] = [
             //     'id' => ++$_SESSION['agurku ID'],
@@ -78,11 +99,34 @@ if (isset($_POST['sodinti_z'])) {
             // ];
     }
     
-App::redirect('sodinimas');
+header("Location: ./sodinimas");
+        exit;
 }
 
 // ISROVIMO SCENARIJUS
-App::rauti();
+if (isset($_POST['rauti'])) {
+
+    // TINAZee\Store::remove($_POST['rauti']);
+    // // TINAZee\App::redirect('sodinimas');
+    // header('Location: ./sodinimas');
+
+    foreach($_SESSION['obj'] as $index => $agurkas) {
+        $agurkas = unserialize($agurkas);
+        if ($_POST['rauti'] == $agurkas->id) {
+            unset($_SESSION['obj'][$index]);
+            header('Location: ./sodinimas');
+            exit;
+        }
+    }
+    foreach($_SESSION['obj1'] as $index => $zirnis) {
+        $zirnis = unserialize($zirnis);
+        if ($_POST['rauti'] == $zirnis->id) {
+            unset($_SESSION['obj1'][$index]);
+            header('Location: ./sodinimas');
+            exit;
+        }
+    }
+}
     // foreach($_SESSION['a'] as $index => $zirnis) {
     //     if ($_POST['rauti'] == $agurkas['id']) {
     //         unset($_SESSION['a'][$index]);
@@ -91,7 +135,8 @@ App::rauti();
     //     }
     // }
 
-
+//<?= URL.'sodinimas'
+//  <?php foreach(TINAZee\Store::getAll() as $agurkas): 
 
 ?>
 
@@ -109,9 +154,9 @@ App::rauti();
 <header>
 <a class="loggout" href="login.php?logout">Atsijungti</a>
 <div id="space"></div>
-<a  href="sodinimas.php">Sodinimas</a>
-<a href="auginimas.php">Auginimas</a>
-<a href="skynimas.php">Skinimas</a>
+<a  href="sodinimas">Sodinimas</a>
+<a href="auginimas">Auginimas</a>
+<a href="skynimas">Skinimas</a>
 </header>
 <h1>Daržovių sodas</h1>
 <h3>Sodinimas</h3>
@@ -120,9 +165,10 @@ App::rauti();
     <div class = "container">
 
     <form action="" method="post">
-
+    
     <?php foreach($_SESSION['obj'] as $agurkas): ?>
     <?php $agurkas = unserialize($agurkas) ?>
+
     <div class = "row">
     <img class="img" src="./img/cucumber/img_<?= $agurkas->imgPath?>.jpg" alt="Agurko nuotrauka">
     <p>Agurko augalas nr. <?= $agurkas->id ?></p>
